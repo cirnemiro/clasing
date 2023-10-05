@@ -2,17 +2,30 @@
 
 import { fetchUsers } from "@/data/users";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 const Table = () => {
-    const { data, isLoading, isFetching, error } = useQuery({
-        queryKey: ["user"],
-        queryFn: fetchUsers,
-      });
 
-      console.log(data,isLoading,isFetching,error);
+    const [order, setOrder] = useState<boolean>(false)
+
+
+    const { data, isLoading, isFetching, error } = useQuery({
+        queryKey: ["user",order],
+        queryFn: fetchUsers,
+    });            
+
+    if (order) {
+        data?.results.sort((a:any, b:any) => a.location.state.localeCompare(b.location.state));
+    }
       
     return(
         <div>
+            <div>
+                <button>Colorear filas</button>
+                <button onClick={()=>{setOrder(!order)}}>Ordenar por país</button>
+                <button>Resetear estado</button>
+                <input type="text" />
+            </div>
             <table>
                 <tr>
                     <th>Foto</th>
