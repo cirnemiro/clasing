@@ -24,9 +24,6 @@ const Table = () => {
 
     useDebounce(() => setQuerySearch(searchString), 400, [searchString]);
 
-    console.log(results);
-    
-
     useEffect(()=>{
         if (data) {
             let filteredData = data.results
@@ -34,8 +31,6 @@ const Table = () => {
                 filteredData = filteredData.sort((a:any, b:any) => a.location.state.localeCompare(b.location.state))
             }
             if (querySearch !== "") {
-                console.log(filteredData.filter((user:any) => user.location.state.toLowerCase().startsWith(querySearch)));
-                
                 filteredData = filteredData.filter((user:any) => user.location.state.toLowerCase().startsWith(querySearch))
             }
             setResults(filteredData)
@@ -56,9 +51,7 @@ const Table = () => {
             filteredData = filteredData.sort((a:any, b:any) => a.location.state.localeCompare(b.location.state))
         }
         if (querySearch !== "") {
-            console.log(filteredData.filter((user:any) => user.location.state.toLowerCase().startsWith(querySearch)));
-            
-            filteredData = filteredData.filter((user:any) => user.location.state.toLowerCase().startsWith(querySearch))
+            filteredData = filteredData.filter((user:any) => user.location.state.toLowerCase().startsWith(querySearch.toLowerCase()))
         }
         setResults(filteredData)
     }
