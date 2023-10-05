@@ -1,9 +1,9 @@
 .tableComponent{
     text-align: center;
     &__filters{
-        padding: 20px;
+        padding: 2%;
         display: flex;
-        gap: 10px;
+        gap: 1%;
         max-width: 700px;
         margin: auto;
         justify-content: space-between;
@@ -14,19 +14,20 @@
     }
     &__noResults{
         color: white;
-        font-size: 20px;
+        font-size: 2em;
     }
     table{
         width: 100%;
         th{
             color: white;
             font-weight: 900;
-            padding: 10px;
+            font-size: 1em;
+            padding: 1%;
             width: 10%;
         }
         
         td{
-            padding: 10px;
+            padding: 1%;
             vertical-align: middle;
             color: white;
             width: 20%;
@@ -36,16 +37,17 @@
         background-color: black;
         color: white;
         font-weight: 600;
-        padding: 15px;
+        padding: 10px;
         border: none;
         border-radius: 10px;
         cursor: pointer;
-        min-width: 159px;
+        // min-width: 159px;
     }
     input{
         padding: 10px 15px;
         height: 10px;
         border-radius: 10px;
+        width: 15%;
     }
     button:active{
         opacity: 0.5;
@@ -57,3 +59,16 @@
     }
     
 }
+
+@media (max-width: 500px) {
+    .tableComponent{
+        table{
+            td:nth-child(3n) {
+                display: none;
+            }
+            th:nth-child(3n) {
+                display: none;
+            }
+        }
+    }
+  }
