@@ -101,7 +101,7 @@ const Table = () => {
                     results?.length !== 0 ?
                     results?.map((user:any,index:number)=>{
                         return(
-                            <tr>
+                            <tr key={user.cell}>
                                 <td aria-colSpan={2}><Image alt="avatar" src={user.picture.medium} width={70} height={70}/></td>
                                 <td>{user.name.first}</td>
                                 <td>{user.name.last}</td>
