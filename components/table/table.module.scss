@@ -6,8 +6,12 @@
         gap: 1%;
         max-width: 700px;
         margin: auto;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
+        &__buttons{
+            display: flex;
+            gap: 10px;
+        }
     }
     &__stateFilter{
         cursor: pointer;
@@ -62,6 +66,15 @@
 
 @media (max-width: 500px) {
     .tableComponent{
+        &__filters{
+            display: block;
+        }
+        input{
+            width: 60%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
         table{
             td:nth-child(3n) {
                 display: none;

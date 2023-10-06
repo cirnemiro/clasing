@@ -3,6 +3,11 @@ import './globals.scss'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Providers from './provider'
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,9 +25,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <div className={styles.content}>
-            {children}
-          </div>
+          <Hydrate >
+
+            <div className={styles.content}>
+              {children}
+            </div>
+          </Hydrate>
         </Providers>
       </body>
     </html>

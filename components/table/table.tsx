@@ -17,10 +17,13 @@ const Table = () => {
     const [searchString, setSearchString] = useState<string>("")
 
 
-     const { data, isLoading, isFetching, error } = useQuery({
+     const { data, isLoading } = useQuery({
         queryKey: ["user",order,querySearch,{staleTime:60}],
         queryFn: fetchUsers,
     });  
+
+    console.log(data);
+    
 
     useDebounce(() => setQuerySearch(searchString), 400, [searchString]);
 
@@ -31,7 +34,7 @@ const Table = () => {
                 filteredData = filteredData.sort((a:any, b:any) => a.location.state.localeCompare(b.location.state))
             }
             if (querySearch !== "") {
-                filteredData = filteredData.filter((user:any) => user.location.state.toLowerCase().startsWith(querySearch))
+                filteredData = filteredData.filter((user:any) => user.location.state.toLowerCase().startsWith(querySearch.toLowerCase()))
             }
             setResults(filteredData)
         }
@@ -59,7 +62,7 @@ const Table = () => {
     let skeletonCount = [];
     for (let i = 0; i <= 20; i++) {
         skeletonCount.push(
-        <tr>
+        <tr key={i}>
             <SkeletonTheme baseColor="#202020" highlightColor="#444">
                 <td><Skeleton height={72} width={70}/></td>
                 <td><Skeleton /></td>
@@ -67,44 +70,54 @@ const Table = () => {
                 <td><Skeleton /></td>
                 <td><button disabled>borrar</button></td>
             </SkeletonTheme>
-        </tr>);
+        </tr>
+        );
     }
 
     return(
         <div className={styles.tableComponent}>
             <div className={styles.tableComponent__filters}>
-                <button onClick={()=>{setColor(!color)}}>{color ? "Descolorear filas":"Colorear filas"}</button>
-                <button onClick={()=>{setOrder(!order)}}>{order ? "No ordenar por país":"Ordenar por país"}</button>
-                <button onClick={()=>{resetUsers()}}>Resetear estado</button>
-                <input type="text" placeholder='fitlra por país' onChange={(e)=>{setSearchString(e.target.value)}}/>
+                <div className={styles.tableComponent__filters__buttons}>
+                    <button onClick={()=>{setColor(!color)}}>{color ? "Descolorear filas":"Colorear filas"}</button>
+                    <button onClick={()=>{setOrder(!order)}}>{order ? "No ordenar por país":"Ordenar por país"}</button>
+                    <button onClick={()=>{resetUsers()}}>Resetear estado</button>
+                </div>
+                <input type="text" placeholder='filtra por país' onChange={(e)=>{setSearchString(e.target.value)}}/>
             </div>
             <table className={`${styles.table} ${color && styles.colorfullTable}`}>
-                <tr>
-                    <th>Foto</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th className={styles.tableComponent__stateFilter} onClick={()=>{setOrder(!order)}}>País{order?" 🔽":""}</th>
-                    <th>Acciones</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Foto</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th className={styles.tableComponent__stateFilter} onClick={()=>{setOrder(!order)}}>País{order?" 🔽":""}</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
                 {
                     isLoading ?
-                       <>{skeletonCount}</> 
+                       <tbody>{skeletonCount}</tbody> 
                    
                     :
                     results?.length !== 0 ?
-                    results?.map((user:any,index:number)=>{
-                        return(
-                            <tr key={user.cell}>
-                                <td aria-colSpan={2}><Image alt="avatar" src={user.picture.medium} width={70} height={70}/></td>
-                                <td>{user.name.first}</td>
-                                <td>{user.name.last}</td>
-                                <td>{user.location.state}</td>
-                                <td><button onClick={()=>{removeUser(index)}}>borrar</button></td>
-                            </tr>
-                        )
-                    }):
+                    <tbody>
+                        {
+                            results?.map((user:any,index:number)=>{
+                                return(
+                                    <tr key={user.cell}>
+                                        <td><Image alt="avatar" src={user.picture.medium} width={70} height={70}/></td>
+                                        <td>{user.name.first}</td>
+                                        <td>{user.name.last}</td>
+                                        <td>{user.location.state}</td>
+                                        <td><button onClick={()=>{removeUser(index)}}>borrar</button></td>
+                                    </tr>
+                                )
+                            })
+                        }
+                    </tbody>
+                    :
                     <tr className={styles.tableComponent__noResults}>
-                        <td colSpan={5} >sin resultados</td>
+                        <td aria-colspan={5} >sin resultados</td>
                     </tr>
                 }
             </table>
