@@ -117,7 +117,7 @@ const Table = () => {
                     </tbody>
                     :
                     <tr className={styles.tableComponent__noResults}>
-                        <td aria-colspan={5} >sin resultados</td>
+                        <td colSpan={5} >sin resultados</td>
                     </tr>
                 }
             </table>
